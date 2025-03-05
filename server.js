@@ -27,7 +27,6 @@ app.use(fileUpload({
     tempFileDir: '/tmp/'
 }))
 
-console.log()
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_NAME,
@@ -42,14 +41,22 @@ app.get('/', (req, res) => {
     })
 })
 
-
 app.use("/api/v1/user", userRouter)
 app.use("/api/v2/book", bookRouter)
 
+dbConnection()
 
 app.listen(8000, () => {
     console.log("server is running at port: ", 8000)
 })
 
+// error handler middleware
+app.use((err, req, res, next) => {
+    console.error("error:", err.stack); 
 
-dbConnection()
+    res.status(err.statusCode || 500).json({
+        success: false,
+        message: err.message || "Internal Server Error",
+    });
+});
+

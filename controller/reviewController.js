@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { catchAsyncError } from "../middleware/catchAsyncError.js";
-import { Book } from "../model/BookSchema.js";
+import { Book } from "../model/bookSchema.js";
 import { Review } from "../model/reviewSchema.js";
 import { User } from "../model/userModel.js";
 
