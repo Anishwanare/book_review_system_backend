@@ -9,14 +9,14 @@ import fileUpload from "express-fileupload";
 import { v2 as cloudinary } from "cloudinary"
 
 const app = express()
-config({ path: './config/config.env' })
+config({ path: '.env' })
 
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 app.use(cors({
-    origin: ['http://localhost:5173' || process.env.FRONTEND_URL],
+    origin: [process.env.FRONTEND_URL || 'http://localhost:5173'],
     methods: ['GET', 'PUT', 'POST', 'DELETE'],
     credentials: true,
     optionsSuccessStatus: 200
@@ -52,7 +52,7 @@ app.listen(8000, () => {
 
 // error handler middleware
 app.use((err, req, res, next) => {
-    console.error("error:", err.stack); 
+    console.error("error:", err.stack);
 
     res.status(err.statusCode || 500).json({
         success: false,
