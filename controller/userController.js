@@ -97,7 +97,6 @@ export const login = catchAsyncError(async (req, res, next) => {
                 user: checkUser
             });
 
-
     } catch (error) {
         console.error(error.message);
         res.status(500).json({
@@ -127,6 +126,48 @@ export const logout = catchAsyncError(async (req, res, next) => {
         })
     }
 })
+
+
+// update pass by id
+export const updateProfileById = catchAsyncError(async (req, res, next) => {
+    try {
+        const { userId } = req.params;
+        const { name, email } = req.body;
+
+        if (!userId) {
+            return res.status(400).json({
+                success: false,
+                message: "User ID is required",
+            });
+        }
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found",
+            });
+        }
+
+        if (name) user.name = name;
+        if (email) user.email = email;
+
+        await user.save();
+
+        res.status(200).json({
+            success: true,
+            message: "Profile updated successfully",
+            user,
+        });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({
+            success: false,
+            message: "Something went wrong, try again later.",
+        });
+    }
+});
+
 
 // fetch me 
 export const fetchMe = catchAsyncError(async (req, res, next) => {
