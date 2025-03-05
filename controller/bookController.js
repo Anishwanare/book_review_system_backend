@@ -172,6 +172,42 @@ export const updateBook = catchAsyncError(async (req, res, next) => {
     }
 })
 
+export const deleteBookById = catchAsyncError(async (req, res, next) => {
+    try {
+        const { bookId } = req.params;
+
+        if (!bookId) {
+            return res.status(400).json({
+                success: false,
+                message: "BookId is required",
+            });
+        }
+
+        const book = await Book.findById(bookId);
+
+        if (!book) {
+            return res.status(404).json({
+                success: false,
+                message: "Book not found",
+            });
+        }
+
+        await book.deleteOne();
+
+        res.status(200).json({
+            success: true,
+            message: "Book deleted successfully",
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Failed to delete book",
+            error: error.message,
+        });
+    }
+});
+
+
 export const fetchBookById = catchAsyncError(async (req, res, next) => {
     try {
         const { bookId } = req.params;
@@ -203,32 +239,4 @@ export const fetchBookById = catchAsyncError(async (req, res, next) => {
             error: error.message
         })
     }
-})
-
-export const deleteBook = catchAsyncError(async (req, res, next) => {
-    const { bookId } = req.body;
-
-    if (!bookId) {
-        return res.status(400).json({
-            success: true,
-            message: "BookId required",
-        })
-    }
-
-    const book = await Book.findById(bookId)
-
-    if (!book) {
-        return res.status(404).json({
-            success: false,
-            message: "Book not found",
-        })
-    }
-
-    await Book.findByIdAndDelete(bookId)
-
-
-    res.status(200).json({
-        success: false,
-        message: "Book deleted successfully"
-    })
 })

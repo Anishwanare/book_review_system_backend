@@ -1,5 +1,5 @@
 import express from "express";
-import { deleteBook, fetchAllBooks, fetchBookById, fetchMyBooks, registerBook, updateBook } from "../controller/bookController.js";
+import { deleteBookById, fetchAllBooks, fetchBookById, fetchMyBooks, registerBook, updateBook } from "../controller/bookController.js";
 import { isAuthenticated, isAuthorized } from "../middleware/auth.js";
 import { getAverageBookReview, reviewBook } from "../controller/reviewController.js";
 
@@ -11,7 +11,7 @@ router.get('/fetch-publisher-book', isAuthenticated, isAuthorized('Admin'), fetc
 
 router.get('/fetch-all-book', fetchAllBooks)
 
-router.delete('/delete', isAuthenticated, isAuthorized("Admin"), deleteBook)
+router.delete('/delete/:bookId', isAuthenticated, isAuthorized("Admin"), deleteBookById)
 
 router.put('/update/:bookId', isAuthenticated, isAuthorized("Admin"), updateBook)
 
