@@ -110,22 +110,32 @@ export const login = catchAsyncError(async (req, res, next) => {
 
 export const logout = catchAsyncError(async (req, res, next) => {
     try {
-        res.status(200).cookie("User_Token", "", {
-            expires: new Date(0)
-        }).cookie("Admin_Token", "", {
-            expires: new Date(0)
-        }).json({
-            success: true,
-            message: "Logged out successfully"
-        })
+        res.status(200)
+            .cookie("User_Token", "", {
+                expires: new Date(0),
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                sameSite: "None",
+            })
+            .cookie("Admin_Token", "", {
+                expires: new Date(0),
+                httpOnly: true, 
+                secure: process.env.NODE_ENV === "production",
+                sameSite: "None",
+            })
+            .json({
+                success: true,
+                message: "Logged out successfully",
+            });
     } catch (error) {
         res.status(500).json({
             success: false,
             message: error?.message || "Internal server error",
-            error
-        })
+            error,
+        });
     }
-})
+});
+
 
 
 // update pass by id
