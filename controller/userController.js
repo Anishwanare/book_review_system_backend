@@ -87,6 +87,8 @@ export const login = catchAsyncError(async (req, res, next) => {
                 {
                     expires: new Date(Date.now() + process.env.COOKIES_EXPIRES * 24 * 60 * 60 * 1000),
                     httpOnly: true,
+                    secure: process.env.NODE_ENV === "production",
+                    sameSite: "None",
                 }
             )
             .json({
