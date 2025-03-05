@@ -16,7 +16,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 app.use(cors({
-    origin: ['http://localhost:5173'],
+    origin: ['https://booknexuss.netlify.app' ||process.env.FRONTEND_URL],
+    // origin: ['http://localhost:5173'],
     methods: ['GET', 'PUT', 'POST', 'DELETE'],
     credentials: true,
     optionsSuccessStatus: 200
